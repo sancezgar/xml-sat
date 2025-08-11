@@ -1,0 +1,21 @@
+.top{
+    -fx-background-color: #eee;
+    -fx-border-width: 0px 0px 0.3px 0px;
+    -fx-border-color: black;
+}
+.menu-file{
+    -fx-background-color:#eee;
+    -fx-font-size: 15px;
+    -fx-text-fill: #333;
+}
+.menu-file:hover{
+    -fx-underline: true;
+
+}
+.btn-cerrar{
+    -fx-background-color: rgb(100,00,00);
+}
+.btn-cerrar:hover{
+    -fx-background-color: rgb(250,00,00);
+    -fx-opacity: 0.9;
+}

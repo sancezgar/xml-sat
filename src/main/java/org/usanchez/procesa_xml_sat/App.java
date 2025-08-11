@@ -20,7 +20,7 @@ public class App extends Application {
         Parent root = FXMLLoader.load(url);
         Stage stage = new Stage();
         Scene scene = new Scene(root);
-        stage.setMaximized(true);
+        //stage.setMaximized(true);
         stage.setScene(scene);
         stage.show();
     }
