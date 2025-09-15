@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
-<?import javafx.scene.Group?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.usanchez.procesa_xml_sat.controller.AppController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.usanchez.procesa_xml_sat.controller.AppController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane fx:id="appWindow" prefHeight="200.0" prefWidth="200.0" />
       <BorderPane prefHeight="200.0" prefWidth="200.0">
          <top>
             <AnchorPane prefHeight="50.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -37,14 +36,6 @@
                               <Font size="15.0" />
                            </font>
                         </Label>
-                        <Button layoutX="1116.0" layoutY="9.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="btn-cerrar" stylesheets="@css/style.css" AnchorPane.rightAnchor="5.0">
-                           <graphic>
-                              <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="1em" />
-                           </graphic>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                        </Button>
                         <MenuBar layoutX="177.0" layoutY="9.0" prefHeight="27.0" prefWidth="192.0" styleClass="menu-file" stylesheets="@css/style.css">
                           <menus>
                             <Menu mnemonicParsing="false" text="File">
@@ -55,22 +46,43 @@
                             </Menu>
                           </menus>
                         </MenuBar>
-                        <Button layoutX="1107.0" layoutY="10.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="btn-maximizar" stylesheets="@css/style.css">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <graphic>
-                              <FontAwesomeIconView fill="#e8e8e8" glyphName="EXPAND" size="1em" />
-                           </graphic>
-                        </Button>
-                        <Button layoutX="1060.0" layoutY="9.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="40.0" styleClass="btn-ocultar" stylesheets="@css/style.css">
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                           <graphic>
-                              <FontAwesomeIconView glyphName="MINUS" size="1em" />
-                           </graphic>
-                        </Button>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="142.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#minimizar" prefHeight="30.0" prefWidth="40.0" styleClass="btn-ocultar" stylesheets="@css/style.css">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <graphic>
+                                    <FontAwesomeIconView glyphName="MINUS" size="1em" />
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#maximizar" prefHeight="30.0" prefWidth="40.0" styleClass="btn-maximizar" stylesheets="@css/style.css">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                                 <graphic>
+                                    <FontAwesomeIconView fill="#e8e8e8" glyphName="EXPAND" size="1em" />
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#cerrarVentana" prefHeight="30.0" prefWidth="40.0" styleClass="btn-cerrar" stylesheets="@css/style.css">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="1em" />
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets right="5.0" />
+                           </padding>
+                        </HBox>
                      </children>
                   </AnchorPane>
                </children>
@@ -82,26 +94,11 @@
                   <AnchorPane prefHeight="750.0" prefWidth="1200.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <Separator prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="49.0" />
-                        <TextField prefHeight="26.0" prefWidth="283.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="14.0" />
+                        <TextField prefHeight="26.0" prefWidth="283.0" promptText="Buscar ..." AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="14.0" />
                         <FontAwesomeIconView glyphName="SEARCH" layoutX="270.0" layoutY="30.0" AnchorPane.leftAnchor="270.0" AnchorPane.topAnchor="18.857142448425293" />
-                        <Group layoutX="340.0" layoutY="16.0" AnchorPane.leftAnchor="340.0" AnchorPane.topAnchor="16.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@css/style.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
                            <children>
-                              <RadioButton layoutX="189.0" layoutY="1.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="86.0" text="Pago">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="tipoXML" />
-                                 </toggleGroup>
-                              </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Ingresos" toggleGroup="$tipoXML" />
-                              <RadioButton layoutX="90.0" layoutY="1.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="89.0" text="Egresos" toggleGroup="$tipoXML" />
-                              <RadioButton layoutX="269.0" layoutY="1.0" mnemonicParsing="false" prefHeight="18.0" prefWidth="86.0" selected="true" text="Todos">
-                                 <toggleGroup>
-                                    <ToggleGroup fx:id="tipoXML1" />
-                                 </toggleGroup>
-                              </RadioButton>
-                           </children>
-                        </Group>
-                        <HBox prefHeight="100.0" prefWidth="200.0" stylesheets="@css/style.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
-                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" styleClass="titulo-label" text="Ingresos" />
                               <TableView>
                                 <columns>
                                    <TableColumn fx:id="fechaColumn" prefWidth="150.0" text="Fecha" />
@@ -144,8 +141,94 @@
                                    <TableColumn fx:id="uuidRelacionadosColumn" prefWidth="150.0" text="UUID Relacionados" />
                                 </columns>
                               </TableView>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="30.0" styleClass="titulo-label" text="Egresos" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                              <TableView>
+                                 <columns>
+                                    <TableColumn fx:id="fechaColumn1" prefWidth="150.0" text="Fecha" />
+                                    <TableColumn fx:id="uuidColumn1" prefWidth="150.0" text="UUID" />
+                                    <TableColumn fx:id="formaPagoColumn1" prefWidth="150.0" text="Forma Pago" />
+                                    <TableColumn fx:id="metodoPagoColumn1" prefWidth="150.0" text="Metodo Pago" />
+                                    <TableColumn fx:id="monedaColumn1" prefWidth="150.0" text="Moneda" />
+                                    <TableColumn fx:id="serieColumn1" prefWidth="150.0" text="Serie" />
+                                    <TableColumn fx:id="folioColumn1" prefWidth="150.0" text="Folio" />
+                                    <TableColumn fx:id="isrColumn1" prefWidth="150.0" text="ISR" />
+                                    <TableColumn fx:id="ivaColumn1" prefWidth="150.0" text="IVA" />
+                                    <TableColumn fx:id="iepsColumn1" prefWidth="150.0" text="IEPS" />
+                                    <TableColumn fx:id="isrRetColumn1" prefWidth="150.0" text="ISR Ret." />
+                                    <TableColumn fx:id="ivaRetColumn1" prefWidth="150.0" text="IVA Ret." />
+                                    <TableColumn fx:id="iepsRetColumn1" prefWidth="150.0" text="IEPS Ret." />
+                                    <TableColumn fx:id="subtotalColumn1" prefWidth="150.0" text="Subtotal" />
+                                    <TableColumn fx:id="totalColumn1" prefWidth="150.0" text="Total" />
+                                    <TableColumn fx:id="tipoComprobanteColumn1" prefWidth="150.0" text="Tipo Comprobante" />
+                                    <TableColumn fx:id="versiónColumn1" prefWidth="150.0" text="Versión" />
+                                    <TableColumn fx:id="rfcEmisorColumn1" prefWidth="150.0" text="RFC Emisor" />
+                                    <TableColumn fx:id="nombreEmisorColumn1" prefWidth="150.0" text="Nombre Emisor" />
+                                    <TableColumn fx:id="regimenFiscalEmisorColumn1" prefWidth="150.0" text="Regimen Fiscal Emisor" />
+                                    <TableColumn fx:id="rfcReceptorColumn1" prefWidth="150.0" text="RFC Receptor" />
+                                    <TableColumn fx:id="nombreReceptorColumn1" prefWidth="150.0" text="Nombre Receptor" />
+                                    <TableColumn fx:id="regimenFiscalReceptorColumn1" prefWidth="150.0" text="Regimen Fiscal Receptor" />
+                                    <TableColumn fx:id="claveProdServColumn1" prefWidth="150.0" text="Clave ProdServ" />
+                                    <TableColumn fx:id="claveUnidadColumn1" prefWidth="150.0" text="Clave Unidad" />
+                                    <TableColumn fx:id="descripcionColumn1" prefWidth="150.0" text="Descripcion" />
+                                    <TableColumn fx:id="objetoImpColumn1" prefWidth="150.0" text="Objeto Imp" />
+                                    <TableColumn fx:id="cantidadColumn1" prefWidth="150.0" text="Cantidad" />
+                                    <TableColumn fx:id="valorUnitarioColumn1" prefWidth="150.0" text="Valor Unitario" />
+                                    <TableColumn fx:id="isrConceptoColumn1" prefWidth="150.0" text="ISR Concepto" />
+                                    <TableColumn fx:id="ivaConceptoColumn1" prefWidth="150.0" text="IVA Concepto" />
+                                    <TableColumn fx:id="iepsConceptoColumn1" prefWidth="150.0" text="IEPS Concepto" />
+                                    <TableColumn fx:id="isrRetConceptoColumn1" prefWidth="150.0" text="ISR Ret. Concepto" />
+                                    <TableColumn fx:id="ivaRetConceptoColumn1" prefWidth="150.0" text="IVA Ret. Concepto" />
+                                    <TableColumn fx:id="iepsRetConceptoColumn1" prefWidth="150.0" text="IEPS Ret. Concepto" />
+                                    <TableColumn fx:id="importeConceptoColumn1" prefWidth="150.0" text="Importe Concepto" />
+                                    <TableColumn fx:id="tipoRelacionColumn1" prefWidth="150.0" text="Tipo Relacion" />
+                                    <TableColumn fx:id="uuidRelacionadosColumn1" prefWidth="150.0" text="UUID Relacionados" />
+                                 </columns>
+                              </TableView>
+                              <Label alignment="CENTER" contentDisplay="CENTER" layoutX="10.0" layoutY="244.0" prefHeight="17.0" styleClass="titulo-label" text="Pagos" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" />
+                              <TableView layoutX="10.0" layoutY="352.0">
+                                 <columns>
+                                    <TableColumn fx:id="fechaColumn11" prefWidth="150.0" text="Fecha" />
+                                    <TableColumn fx:id="uuidColumn11" prefWidth="150.0" text="UUID" />
+                                    <TableColumn fx:id="formaPagoColumn11" prefWidth="150.0" text="Forma Pago" />
+                                    <TableColumn fx:id="metodoPagoColumn11" prefWidth="150.0" text="Metodo Pago" />
+                                    <TableColumn fx:id="monedaColumn11" prefWidth="150.0" text="Moneda" />
+                                    <TableColumn fx:id="serieColumn11" prefWidth="150.0" text="Serie" />
+                                    <TableColumn fx:id="folioColumn11" prefWidth="150.0" text="Folio" />
+                                    <TableColumn fx:id="isrColumn11" prefWidth="150.0" text="ISR" />
+                                    <TableColumn fx:id="ivaColumn11" prefWidth="150.0" text="IVA" />
+                                    <TableColumn fx:id="iepsColumn11" prefWidth="150.0" text="IEPS" />
+                                    <TableColumn fx:id="isrRetColumn11" prefWidth="150.0" text="ISR Ret." />
+                                    <TableColumn fx:id="ivaRetColumn11" prefWidth="150.0" text="IVA Ret." />
+                                    <TableColumn fx:id="iepsRetColumn11" prefWidth="150.0" text="IEPS Ret." />
+                                    <TableColumn fx:id="subtotalColumn11" prefWidth="150.0" text="Subtotal" />
+                                    <TableColumn fx:id="totalColumn11" prefWidth="150.0" text="Total" />
+                                    <TableColumn fx:id="tipoComprobanteColumn11" prefWidth="150.0" text="Tipo Comprobante" />
+                                    <TableColumn fx:id="versiónColumn11" prefWidth="150.0" text="Versión" />
+                                    <TableColumn fx:id="rfcEmisorColumn11" prefWidth="150.0" text="RFC Emisor" />
+                                    <TableColumn fx:id="nombreEmisorColumn11" prefWidth="150.0" text="Nombre Emisor" />
+                                    <TableColumn fx:id="regimenFiscalEmisorColumn11" prefWidth="150.0" text="Regimen Fiscal Emisor" />
+                                    <TableColumn fx:id="rfcReceptorColumn11" prefWidth="150.0" text="RFC Receptor" />
+                                    <TableColumn fx:id="nombreReceptorColumn11" prefWidth="150.0" text="Nombre Receptor" />
+                                    <TableColumn fx:id="regimenFiscalReceptorColumn11" prefWidth="150.0" text="Regimen Fiscal Receptor" />
+                                    <TableColumn fx:id="claveProdServColumn11" prefWidth="150.0" text="Clave ProdServ" />
+                                    <TableColumn fx:id="claveUnidadColumn11" prefWidth="150.0" text="Clave Unidad" />
+                                    <TableColumn fx:id="descripcionColumn11" prefWidth="150.0" text="Descripcion" />
+                                    <TableColumn fx:id="objetoImpColumn11" prefWidth="150.0" text="Objeto Imp" />
+                                    <TableColumn fx:id="cantidadColumn11" prefWidth="150.0" text="Cantidad" />
+                                    <TableColumn fx:id="valorUnitarioColumn11" prefWidth="150.0" text="Valor Unitario" />
+                                    <TableColumn fx:id="isrConceptoColumn11" prefWidth="150.0" text="ISR Concepto" />
+                                    <TableColumn fx:id="ivaConceptoColumn11" prefWidth="150.0" text="IVA Concepto" />
+                                    <TableColumn fx:id="iepsConceptoColumn11" prefWidth="150.0" text="IEPS Concepto" />
+                                    <TableColumn fx:id="isrRetConceptoColumn11" prefWidth="150.0" text="ISR Ret. Concepto" />
+                                    <TableColumn fx:id="ivaRetConceptoColumn11" prefWidth="150.0" text="IVA Ret. Concepto" />
+                                    <TableColumn fx:id="iepsRetConceptoColumn11" prefWidth="150.0" text="IEPS Ret. Concepto" />
+                                    <TableColumn fx:id="importeConceptoColumn11" prefWidth="150.0" text="Importe Concepto" />
+                                    <TableColumn fx:id="tipoRelacionColumn11" prefWidth="150.0" text="Tipo Relacion" />
+                                    <TableColumn fx:id="uuidRelacionadosColumn11" prefWidth="150.0" text="UUID Relacionados" />
+                                 </columns>
+                              </TableView>
                            </children>
-                        </HBox>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </children>

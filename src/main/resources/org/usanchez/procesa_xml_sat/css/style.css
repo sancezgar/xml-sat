@@ -19,6 +19,12 @@
     -fx-background-color: rgb(250,00,00);
     -fx-opacity: 0.9;
 }
+.btn-cerrar:pressed{
+    -fx-background-color: rgb(100,00,00);
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
 .btn-maximizar{
     -fx-background-color: rgb(200,150,00);
 }
@@ -26,12 +32,29 @@
     -fx-background-color: rgb(250,190,00);
     -fx-opacity: 0.9;
 }
+.btn-maximizar:pressed{
+    -fx-background-color: rgb(200,150,00);
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
 .btn-ocultar{
     -fx-background-color: #aaa;
 }
 .btn-ocultar:hover{
     -fx-background-color: #ccc;
     -fx-opacity: 0.9;
+}
+.btn-ocultar:pressed{
+    -fx-background-color: #aaa;
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+/*
+        TITULOS TABLE VIEW
+*/
+.titulo-label{
+    -fx-text-fill: #256b51;
+    -fx-font-size: 20px;
 }
 
 /*
