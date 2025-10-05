@@ -5,6 +5,8 @@ public class XmlInfo {
     private String claveProdServ;
     private String claveUnidad;
     private String descripcion;
+    private String descuento;
+    private String descuentoConcepto;
     private String fecha;
     private String folio;
     private String formaPago;
@@ -46,48 +48,7 @@ public class XmlInfo {
         isrRet = ""; isrRetConcepto = ""; iva = ""; ivaConcepto = ""; ivaRet = ""; ivaRetConcepto = ""; metodoPago = ""; moneda = "";
         nombreEmisor = ""; nombreReceptor = ""; objetoImp = ""; regimenFiscalEmisor = ""; regimenFiscalReceptor = ""; rfcEmisor = "";
         rfcReceptor = ""; serie = ""; subtotal = ""; tipoComprobante = ""; tipoRelacion = ""; total = ""; uuid = ""; uuidRelacionados = "";
-        valorUnitario = ""; version = "";
-    }
-
-    public XmlInfo(String cantidad, String claveProdServ, String claveUnidad, String descripcion, String fecha, String folio, String formaPago, String ieps, String iepsConcepto, String iepsRet, String iepsRetConcepto, String importeConcepto, String isr, String isrConcepto, String isrRet, String isrRetConcepto, String iva, String ivaConcepto, String ivaRet, String ivaRetConcepto, String metodoPago, String moneda, String nombreEmisor, String nombreReceptor, String objetoImp, String regimenFiscalEmisor, String regimenFiscalReceptor, String rfcEmisor, String rfcReceptor, String serie, String subtotal, String tipoComprobante, String tipoRelacion, String total, String uuid, String uuidRelacionados, String valorUnitario, String version) {
-        this.cantidad = cantidad;
-        this.claveProdServ = claveProdServ;
-        this.claveUnidad = claveUnidad;
-        this.descripcion = descripcion;
-        this.fecha = fecha;
-        this.folio = folio;
-        this.formaPago = formaPago;
-        this.ieps = ieps;
-        this.iepsConcepto = iepsConcepto;
-        this.iepsRet = iepsRet;
-        this.iepsRetConcepto = iepsRetConcepto;
-        this.importeConcepto = importeConcepto;
-        this.isr = isr;
-        this.isrConcepto = isrConcepto;
-        this.isrRet = isrRet;
-        this.isrRetConcepto = isrRetConcepto;
-        this.iva = iva;
-        this.ivaConcepto = ivaConcepto;
-        this.ivaRet = ivaRet;
-        this.ivaRetConcepto = ivaRetConcepto;
-        this.metodoPago = metodoPago;
-        this.moneda = moneda;
-        this.nombreEmisor = nombreEmisor;
-        this.nombreReceptor = nombreReceptor;
-        this.objetoImp = objetoImp;
-        this.regimenFiscalEmisor = regimenFiscalEmisor;
-        this.regimenFiscalReceptor = regimenFiscalReceptor;
-        this.rfcEmisor = rfcEmisor;
-        this.rfcReceptor = rfcReceptor;
-        this.serie = serie;
-        this.subtotal = subtotal;
-        this.tipoComprobante = tipoComprobante;
-        this.tipoRelacion = tipoRelacion;
-        this.total = total;
-        this.uuid = uuid;
-        this.uuidRelacionados = uuidRelacionados;
-        this.valorUnitario = valorUnitario;
-        this.version = version;
+        valorUnitario = ""; version = "";descuento="";descuentoConcepto="";
     }
 
     public String getFecha() {
@@ -392,5 +353,21 @@ public class XmlInfo {
 
     public void setUuidRelacionados(String uuidRelacionados) {
         this.uuidRelacionados = uuidRelacionados;
+    }
+
+    public String getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(String descuento) {
+        this.descuento = descuento;
+    }
+
+    public String getDescuentoConcepto() {
+        return descuentoConcepto;
+    }
+
+    public void setDescuentoConcepto(String descuentoConcepto) {
+        this.descuentoConcepto = descuentoConcepto;
     }
 }
