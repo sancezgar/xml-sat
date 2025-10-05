@@ -118,6 +118,7 @@
                                                <TableColumn fx:id="isrRetColumnIngreso" prefWidth="150.0" text="ISR Ret." />
                                                <TableColumn fx:id="ivaRetColumnIngreso" prefWidth="150.0" text="IVA Ret." />
                                                <TableColumn fx:id="iepsRetColumnIngreso" prefWidth="150.0" text="IEPS Ret." />
+                                                <TableColumn fx:id="descuentoColumnIngreso" prefWidth="150.0" text="Descuento" />
                                                <TableColumn fx:id="subtotalColumnIngreso" prefWidth="150.0" text="Subtotal" />
                                                <TableColumn fx:id="totalColumnIngreso" prefWidth="150.0" text="Total" />
                                                <TableColumn fx:id="tipoComprobanteColumnIngreso" prefWidth="150.0" text="Tipo Comprobante" />
@@ -140,6 +141,7 @@
                                                <TableColumn fx:id="isrRetConceptoColumnIngreso" prefWidth="150.0" text="ISR Ret. Concepto" />
                                                <TableColumn fx:id="ivaRetConceptoColumnIngreso" prefWidth="150.0" text="IVA Ret. Concepto" />
                                                <TableColumn fx:id="iepsRetConceptoColumnIngreso" prefWidth="150.0" text="IEPS Ret. Concepto" />
+                                                <TableColumn fx:id="descuentoConceptoColumnIngreso" prefWidth="150.0" text="Descuento Concepto" />
                                                <TableColumn fx:id="importeConceptoColumnIngreso" prefWidth="150.0" text="Importe Concepto" />
                                                <TableColumn fx:id="tipoRelacionColumnIngreso" prefWidth="150.0" text="Tipo Relacion" />
                                                <TableColumn fx:id="uuidRelacionadosColumnIngreso" prefWidth="150.0" text="UUID Relacionados" />
@@ -168,6 +170,7 @@
                                                 <TableColumn fx:id="isrRetColumnEgreso" prefWidth="150.0" text="ISR Ret." />
                                                 <TableColumn fx:id="ivaRetColumnEgreso" prefWidth="150.0" text="IVA Ret." />
                                                 <TableColumn fx:id="iepsRetColumnEgreso" prefWidth="150.0" text="IEPS Ret." />
+                                                <TableColumn fx:id="descuentoColumnEgreso" prefWidth="150.0" text="Descuento" />
                                                 <TableColumn fx:id="subtotalColumnEgreso" prefWidth="150.0" text="Subtotal" />
                                                 <TableColumn fx:id="totalColumnEgreso" prefWidth="150.0" text="Total" />
                                                 <TableColumn fx:id="tipoComprobanteColumnEgreso" prefWidth="150.0" text="Tipo Comprobante" />
@@ -190,6 +193,7 @@
                                                 <TableColumn fx:id="isrRetConceptoColumnEgreso" prefWidth="150.0" text="ISR Ret. Concepto" />
                                                 <TableColumn fx:id="ivaRetConceptoColumnEgreso" prefWidth="150.0" text="IVA Ret. Concepto" />
                                                 <TableColumn fx:id="iepsRetConceptoColumnEgreso" prefWidth="150.0" text="IEPS Ret. Concepto" />
+                                                <TableColumn fx:id="descuentoConceptoColumnEgreso" prefWidth="150.0" text="Descuento Concepto" />
                                                 <TableColumn fx:id="importeConceptoColumnEgreso" prefWidth="150.0" text="Importe Concepto" />
                                                 <TableColumn fx:id="tipoRelacionColumnEgreso" prefWidth="150.0" text="Tipo Relacion" />
                                                 <TableColumn fx:id="uuidRelacionadosColumnEgreso" prefWidth="150.0" text="UUID Relacionados" />

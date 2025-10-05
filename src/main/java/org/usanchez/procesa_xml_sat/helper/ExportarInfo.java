@@ -2,12 +2,12 @@ package org.usanchez.procesa_xml_sat.helper;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import static org.usanchez.procesa_xml_sat.helper.TransformarTexto.*;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -16,10 +16,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ExportarInfo {
     public static<T> void exportarExcel(List<TableView<?>> tablas, String archivoRuta){
 
-        try(Workbook workbook = new HSSFWorkbook();) {
+        try(Workbook workbook = new XSSFWorkbook();) {
             for (TableView<?> tabla : tablas) {
                 exportaUnaTabla(tabla,workbook,archivoRuta);
             }
+            System.out.println("Termina exportación...");
         }catch (Exception e){
             System.out.println("Mensaje Error -> " + e.getMessage());
         }
@@ -28,14 +29,23 @@ public class ExportarInfo {
     public static<T> void exportaUnaTabla(TableView<T> tabla, Workbook workbook, String archivoRuta){
         AtomicInteger rowNum = new AtomicInteger(0);
         Sheet hoja = workbook.createSheet(tabla.getAccessibleText());
+        hoja.createFreezePane(0,1,0,1);
+        System.out.println("Generando la hoja " + tabla.getAccessibleText());
 
                 //Estilo cabecera
                 CellStyle estiloCabecera = workbook.createCellStyle();
                 Font fuenteCabecera = workbook.createFont();
                 fuenteCabecera.setBold(true);
+                fuenteCabecera.setColor(IndexedColors.WHITE.getIndex());
                 estiloCabecera.setFont(fuenteCabecera);
                 estiloCabecera.setFillForegroundColor(IndexedColors.LIGHT_BLUE.getIndex());
                 estiloCabecera.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                //Estilo Celda
+                CellStyle estiloCelda = workbook.createCellStyle();
+                estiloCelda.setAlignment(HorizontalAlignment.CENTER);
+                estiloCelda.setVerticalAlignment(VerticalAlignment.CENTER);
+                estiloCelda.setWrapText(true);
 
                 //Crear fila cabecera
                 Row cabecera = hoja.createRow(rowNum.getAndIncrement());
@@ -80,6 +90,7 @@ public class ExportarInfo {
                         } else {
                             cell.setCellValue(""); // Celda vacía si el valor es null
                         }
+                        cell.setCellStyle(estiloCelda);
                     }
                 }
 

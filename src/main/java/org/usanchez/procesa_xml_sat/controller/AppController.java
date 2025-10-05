@@ -53,6 +53,8 @@ public class AppController implements Initializable {
     @FXML private TableColumn<XmlInfo, String> claveProdServColumnIngreso;
     @FXML private TableColumn<XmlInfo, String> claveUnidadColumnIngreso;
     @FXML private TableColumn<XmlInfo, String> descripcionColumnIngreso;
+    @FXML private TableColumn<XmlInfo, String> descuentoColumnIngreso;
+    @FXML private TableColumn<XmlInfo, String> descuentoConceptoColumnIngreso;
     @FXML private TableColumn<XmlInfo, String> fechaColumnIngreso;
     @FXML private TableColumn<XmlInfo, String> folioColumnIngreso;
     @FXML private TableColumn<XmlInfo, String> formaPagoColumnIngreso;
@@ -94,6 +96,8 @@ public class AppController implements Initializable {
     @FXML private TableColumn<XmlInfo, String> claveProdServColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> claveUnidadColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> descripcionColumnEgreso;
+    @FXML private TableColumn<XmlInfo, String> descuentoColumnEgreso;
+    @FXML private TableColumn<XmlInfo, String> descuentoConceptoColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> fechaColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> folioColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> formaPagoColumnEgreso;
@@ -170,9 +174,10 @@ public class AppController implements Initializable {
 
     public void exportar(){
 
-        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyy_hhmmss"));
+        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyy_HHmmss"));
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Reporte");
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         //Filtro para archivos Excel
         FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Archivos Excel (*.xlsx)","*.xlsx");
@@ -194,8 +199,8 @@ public class AppController implements Initializable {
 
     public void importar(){
         DirectoryChooser dc = new DirectoryChooser();
-        File selectedDirectory =  dc.showDialog(null);
         dc.setInitialDirectory(new File(System.getProperty("user.home")));
+        File selectedDirectory =  dc.showDialog(null);
         if(selectedDirectory != null){
             limpiarListas();
             List<File> listaArchivos = Arrays.stream(selectedDirectory.listFiles()).toList();
@@ -265,6 +270,8 @@ public class AppController implements Initializable {
         uuidRelacionadosColumnIngreso.setCellValueFactory(new PropertyValueFactory<>("uuidRelacionados"));
         valorUnitarioColumnIngreso.setCellValueFactory(new PropertyValueFactory<>("valorUnitario"));
         versionColumnIngreso.setCellValueFactory(new PropertyValueFactory<>("version"));
+        descuentoColumnIngreso.setCellValueFactory(new PropertyValueFactory<>("descuento"));
+        descuentoConceptoColumnIngreso.setCellValueFactory(new PropertyValueFactory<>("descuentoConcepto"));
 
         ingresoTablaView.setItems(tablaIngresos);
     }
@@ -308,6 +315,8 @@ public class AppController implements Initializable {
         uuidRelacionadosColumnEgreso.setCellValueFactory(new PropertyValueFactory<>("uuidRelacionados"));
         valorUnitarioColumnEgreso.setCellValueFactory(new PropertyValueFactory<>("valorUnitario"));
         versionColumnEgreso.setCellValueFactory(new PropertyValueFactory<>("version"));
+        descuentoColumnEgreso.setCellValueFactory(new PropertyValueFactory<>("descuento"));
+        descuentoConceptoColumnEgreso.setCellValueFactory(new PropertyValueFactory<>("descuentoConcepto"));
 
         egresoTablaView.setItems(tablaEgresos);
     }
