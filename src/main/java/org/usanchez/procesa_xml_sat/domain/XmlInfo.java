@@ -1,87 +1,93 @@
 package org.usanchez.procesa_xml_sat.domain;
 
 public class XmlInfo {
-    private String fecha;
-    private String uuid;
-    private String formaPago;
-    private String metodoPago;
-    private String moneda;
-    private String serie;
-    private String folio;
-    private String isrConcepto;
-    private String ivaConcepto;
-    private String iepsConcepto;
-    private String isrRet;
-    private String ivaRet;
-    private String iepsRet;
-    private String subtotal;
-    private String total;
-    private String tipoComprobante;
-    private String versión;
-    private String rfcEmisor;
-    private String nombreEmisor;
-    private String regimenFiscalEmisor;
-    private String rfcReceptor;
-    private String nombreReceptor;
-    private String regimenFiscalReceptor;
+    private String cantidad;
     private String claveProdServ;
     private String claveUnidad;
     private String descripcion;
-    private String objetoImp;
-    private String cantidad;
-    private String valorUnitario;
-    private String isr;
-    private String iva;
+    private String fecha;
+    private String folio;
+    private String formaPago;
     private String ieps;
-    private String isrRetConcepto;
-    private String ivaRetConcepto;
+    private String iepsConcepto;
+    private String iepsRet;
     private String iepsRetConcepto;
     private String importeConcepto;
+    private String isr;
+    private String isrConcepto;
+    private String isrRet;
+    private String isrRetConcepto;
+    private String iva;
+    private String ivaConcepto;
+    private String ivaRet;
+    private String ivaRetConcepto;
+    private String metodoPago;
+    private String moneda;
+    private String nombreEmisor;
+    private String nombreReceptor;
+    private String objetoImp;
+    private String regimenFiscalEmisor;
+    private String regimenFiscalReceptor;
+    private String rfcEmisor;
+    private String rfcReceptor;
+    private String serie;
+    private String subtotal;
+    private String tipoComprobante;
     private String tipoRelacion;
+    private String total;
+    private String uuid;
     private String uuidRelacionados;
+    private String valorUnitario;
+    private String version;
 
     public XmlInfo() {
+        cantidad = ""; claveProdServ = ""; claveUnidad = ""; descripcion = ""; fecha = ""; folio = ""; formaPago = "";
+        ieps = ""; iepsConcepto = ""; iepsRet = ""; iepsRetConcepto = ""; importeConcepto = ""; isr = ""; isrConcepto = "";
+        isrRet = ""; isrRetConcepto = ""; iva = ""; ivaConcepto = ""; ivaRet = ""; ivaRetConcepto = ""; metodoPago = ""; moneda = "";
+        nombreEmisor = ""; nombreReceptor = ""; objetoImp = ""; regimenFiscalEmisor = ""; regimenFiscalReceptor = ""; rfcEmisor = "";
+        rfcReceptor = ""; serie = ""; subtotal = ""; tipoComprobante = ""; tipoRelacion = ""; total = ""; uuid = ""; uuidRelacionados = "";
+        valorUnitario = ""; version = "";
     }
 
-    public XmlInfo(String fecha, String uuid, String formaPago, String metodoPago, String moneda, String serie, String folio, String isrConcepto, String ivaConcepto, String iepsConcepto, String isrRet, String ivaRet, String iepsRet, String subtotal, String total, String tipoComprobante, String versión, String rfcEmisor, String nombreEmisor, String regimenFiscalEmisor, String rfcReceptor, String nombreReceptor, String regimenFiscalReceptor, String claveProdServ, String claveUnidad, String descripcion, String objetoImp, String cantidad, String valorUnitario, String isr, String iva, String ieps, String isrRetConcepto, String ivaRetConcepto, String iepsRetConcepto, String importeConcepto, String tipoRelacion, String uuidRelacionados) {
-        this.fecha = fecha;
-        this.uuid = uuid;
-        this.formaPago = formaPago;
-        this.metodoPago = metodoPago;
-        this.moneda = moneda;
-        this.serie = serie;
-        this.folio = folio;
-        this.isrConcepto = isrConcepto;
-        this.ivaConcepto = ivaConcepto;
-        this.iepsConcepto = iepsConcepto;
-        this.isrRet = isrRet;
-        this.ivaRet = ivaRet;
-        this.iepsRet = iepsRet;
-        this.subtotal = subtotal;
-        this.total = total;
-        this.tipoComprobante = tipoComprobante;
-        this.versión = versión;
-        this.rfcEmisor = rfcEmisor;
-        this.nombreEmisor = nombreEmisor;
-        this.regimenFiscalEmisor = regimenFiscalEmisor;
-        this.rfcReceptor = rfcReceptor;
-        this.nombreReceptor = nombreReceptor;
-        this.regimenFiscalReceptor = regimenFiscalReceptor;
+    public XmlInfo(String cantidad, String claveProdServ, String claveUnidad, String descripcion, String fecha, String folio, String formaPago, String ieps, String iepsConcepto, String iepsRet, String iepsRetConcepto, String importeConcepto, String isr, String isrConcepto, String isrRet, String isrRetConcepto, String iva, String ivaConcepto, String ivaRet, String ivaRetConcepto, String metodoPago, String moneda, String nombreEmisor, String nombreReceptor, String objetoImp, String regimenFiscalEmisor, String regimenFiscalReceptor, String rfcEmisor, String rfcReceptor, String serie, String subtotal, String tipoComprobante, String tipoRelacion, String total, String uuid, String uuidRelacionados, String valorUnitario, String version) {
+        this.cantidad = cantidad;
         this.claveProdServ = claveProdServ;
         this.claveUnidad = claveUnidad;
         this.descripcion = descripcion;
-        this.objetoImp = objetoImp;
-        this.cantidad = cantidad;
-        this.valorUnitario = valorUnitario;
-        this.isr = isr;
-        this.iva = iva;
+        this.fecha = fecha;
+        this.folio = folio;
+        this.formaPago = formaPago;
         this.ieps = ieps;
-        this.isrRetConcepto = isrRetConcepto;
-        this.ivaRetConcepto = ivaRetConcepto;
+        this.iepsConcepto = iepsConcepto;
+        this.iepsRet = iepsRet;
         this.iepsRetConcepto = iepsRetConcepto;
         this.importeConcepto = importeConcepto;
+        this.isr = isr;
+        this.isrConcepto = isrConcepto;
+        this.isrRet = isrRet;
+        this.isrRetConcepto = isrRetConcepto;
+        this.iva = iva;
+        this.ivaConcepto = ivaConcepto;
+        this.ivaRet = ivaRet;
+        this.ivaRetConcepto = ivaRetConcepto;
+        this.metodoPago = metodoPago;
+        this.moneda = moneda;
+        this.nombreEmisor = nombreEmisor;
+        this.nombreReceptor = nombreReceptor;
+        this.objetoImp = objetoImp;
+        this.regimenFiscalEmisor = regimenFiscalEmisor;
+        this.regimenFiscalReceptor = regimenFiscalReceptor;
+        this.rfcEmisor = rfcEmisor;
+        this.rfcReceptor = rfcReceptor;
+        this.serie = serie;
+        this.subtotal = subtotal;
+        this.tipoComprobante = tipoComprobante;
         this.tipoRelacion = tipoRelacion;
+        this.total = total;
+        this.uuid = uuid;
         this.uuidRelacionados = uuidRelacionados;
+        this.valorUnitario = valorUnitario;
+        this.version = version;
     }
 
     public String getFecha() {
@@ -138,6 +144,14 @@ public class XmlInfo {
 
     public void setFolio(String folio) {
         this.folio = folio;
+    }
+
+    public String getIsr() {
+        return isr;
+    }
+
+    public void setIsr(String isr) {
+        this.isr = isr;
     }
 
     public String getIsrConcepto() {
@@ -212,12 +226,12 @@ public class XmlInfo {
         this.tipoComprobante = tipoComprobante;
     }
 
-    public String getVersión() {
-        return versión;
+    public String getVersion() {
+        return version;
     }
 
-    public void setVersión(String versión) {
-        this.versión = versión;
+    public void setVersion(String version) {
+        this.version = version;
     }
 
     public String getRfcEmisor() {
@@ -314,14 +328,6 @@ public class XmlInfo {
 
     public void setValorUnitario(String valorUnitario) {
         this.valorUnitario = valorUnitario;
-    }
-
-    public String getIsr() {
-        return isr;
-    }
-
-    public void setIsr(String isr) {
-        this.isr = isr;
     }
 
     public String getIva() {
