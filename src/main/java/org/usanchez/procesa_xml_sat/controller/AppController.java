@@ -7,21 +7,28 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.usanchez.procesa_xml_sat.domain.*;
 import static org.usanchez.procesa_xml_sat.helper.ManejoXML.*;
+import static org.usanchez.procesa_xml_sat.helper.FormatoCantidades.*;
+import static org.usanchez.procesa_xml_sat.helper.ExportarInfo.*;
 
 import java.io.File;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class AppController implements Initializable {
-    
+    @FXML private TableView<XmlPago> pagoTableView;
     @FXML private TableColumn<XmlPago, String> FechaPagoColumn;
     @FXML private TableColumn<XmlPago, String> FechaTimbradoColumn;
     @FXML private TableColumn<XmlPago, String> FolioColumn;
@@ -122,6 +129,10 @@ public class AppController implements Initializable {
     @FXML private TableColumn<XmlInfo, String> valorUnitarioColumnEgreso;
     @FXML private TableColumn<XmlInfo, String> versionColumnEgreso;
 
+    @FXML private Tab ingresosTab;
+    @FXML private Tab egresosTab;
+    @FXML private Tab pagosTab;
+
     private JAXBContext jaxbContext;
     private Unmarshaller jaxbUnmarshaller;
 
@@ -133,12 +144,15 @@ public class AppController implements Initializable {
     private ObservableList<XmlInfo> tablaEgresos;
     private ObservableList<?> tablaPagos;
 
+    private List<TableView<?>> tablas;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tablaIngresos = FXCollections.observableArrayList();
         tablaEgresos = FXCollections.observableArrayList();
         tablaPagos = FXCollections.observableArrayList();
+        tablas = Arrays.asList(ingresoTablaView,egresoTablaView,pagoTableView);
     }
 
     public AppController() {
@@ -154,19 +168,61 @@ public class AppController implements Initializable {
         }
     }
 
+    public void exportar(){
+
+        String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyy_hhmmss"));
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Guardar Reporte");
+
+        //Filtro para archivos Excel
+        FileChooser.ExtensionFilter excelFilter = new FileChooser.ExtensionFilter("Archivos Excel (*.xlsx)","*.xlsx");
+        fileChooser.getExtensionFilters().addAll(excelFilter);
+        fileChooser.setInitialFileName("reporte_xml_sat_"+fecha);
+
+        File file = fileChooser.showSaveDialog(null);
+        if(file != null){
+            String path = file.getAbsolutePath();
+            String selectedExtension = fileChooser.getSelectedExtensionFilter().getExtensions().get(0);
+
+            if(!path.toLowerCase().endsWith(selectedExtension.substring(1))){
+                file = new File(path + selectedExtension.substring(1));
+            }
+            System.out.println(file.getAbsolutePath());
+            exportarExcel(tablas,file.getAbsolutePath());
+        }
+    }
+
     public void importar(){
-        limpiarListas();
         DirectoryChooser dc = new DirectoryChooser();
         File selectedDirectory =  dc.showDialog(null);
         dc.setInitialDirectory(new File(System.getProperty("user.home")));
         if(selectedDirectory != null){
+            limpiarListas();
             List<File> listaArchivos = Arrays.stream(selectedDirectory.listFiles()).toList();
             listaArchivos = listaArchivos.stream().filter(a -> a.getName().endsWith(".xml")).toList();
             listaArchivos.forEach(this::leerXML);
+            obtenerCantidadTitulosTab();
             mostrarTablaIngresos();
             mostrarTablaEgresos();
         }else{
             System.out.println("No se escogio la ruta.");
+        }
+    }
+
+    public void leerXML(File archivo){
+        try{
+            Comprobante comprobante = (Comprobante) jaxbUnmarshaller.unmarshal(archivo);
+            Optional<String> tipoOptional = Optional.ofNullable(String.valueOf(comprobante.getTipoDeComprobante()));
+
+            if(tipoOptional.isPresent()){
+                String tipoIngreso = tipoOptional.get();
+                switch (tipoIngreso){
+                    case TIPO_INGRESOS -> tablaIngresos.add(llenaXmlInfo(comprobante));
+                    case TIPO_EGRESOS -> tablaEgresos.add(llenaXmlInfo(comprobante));
+                }
+            }
+        }catch (JAXBException e){
+            System.out.println("Mensaje de error: " + e.getMessage());
         }
     }
 
@@ -256,22 +312,18 @@ public class AppController implements Initializable {
         egresoTablaView.setItems(tablaEgresos);
     }
 
-    public void leerXML(File archivo){
-        try{
-            Comprobante comprobante = (Comprobante) jaxbUnmarshaller.unmarshal(archivo);
-            Optional<String> optional = Optional.ofNullable(String.valueOf(comprobante.getTipoDeComprobante()));
 
-            if(optional.isPresent()){
-                String tipoIngreso = comprobante.getTipoDeComprobante().toString();
-                switch (tipoIngreso){
-                    case TIPO_INGRESOS -> tablaIngresos.add(llenaXmlInfo(comprobante));
-                    case TIPO_EGRESOS -> tablaEgresos.add(llenaXmlInfo(comprobante));
-                }
-            }
-        }catch (JAXBException e){
-            System.out.println("Mensaje de error: " + e.getMessage());
-        }
+    private void obtenerCantidadTitulosTab(){
+        int ing = tablaIngresos.size();
+        int egr = tablaEgresos.size();
+        int pag = tablaPagos.size();
+
+        ingresosTab.setText("Ingresos (" + formatoEnteros(ing) + ")");
+        egresosTab.setText("Egresos (" + formatoEnteros(egr) + ")");
+        pagosTab.setText("Pagos (" + formatoEnteros(pag) + ")");
     }
+
+
 
     public void minimizar(){
         Stage stage = (Stage) appWindow.getScene().getWindow();

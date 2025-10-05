@@ -4,6 +4,7 @@ module org.usanchez.procesa_xml_sat {
     requires java.desktop;
     requires jakarta.xml.bind;
     requires javafx.base;
+    requires org.apache.poi.poi;
 
 
     opens org.usanchez.procesa_xml_sat to javafx.fxml;

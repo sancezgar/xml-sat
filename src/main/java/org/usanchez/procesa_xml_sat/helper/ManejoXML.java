@@ -1,11 +1,9 @@
 package org.usanchez.procesa_xml_sat.helper;
 
-import org.usanchez.procesa_xml_sat.domain.Comprobante;
-import org.usanchez.procesa_xml_sat.domain.Pagos;
-import org.usanchez.procesa_xml_sat.domain.TimbreFiscalDigital;
-import org.usanchez.procesa_xml_sat.domain.XmlInfo;
+import org.usanchez.procesa_xml_sat.domain.*;
 
-import java.util.Collections;
+import static org.usanchez.procesa_xml_sat.helper.FormatoCantidades.*;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -51,13 +49,13 @@ public class ManejoXML {
             retencion.ifPresent(retencions -> retencions.getRetencion().forEach(rete -> {
                 switch (rete.getImpuesto()) {
                     case ISR -> {
-                        xml.setIsrRet(rete.getImporte().toString());
+                        xml.setIsrRet(formatoMontos(rete.getImporte()));
                     }
                     case IVA -> {
-                        xml.setIvaRet(rete.getImporte().toString());
+                        xml.setIvaRet(formatoMontos(rete.getImporte()));
                     }
                     case IEPS -> {
-                        xml.setIepsRet(rete.getImporte().toString());
+                        xml.setIepsRet(formatoMontos(rete.getImporte()));
                     }
                 }
             }));
@@ -66,23 +64,23 @@ public class ManejoXML {
             traslado.ifPresent(traslados -> traslados.getTraslado().forEach(tras -> {
                 switch (tras.getImpuesto()) {
                     case ISR -> {
-                        if ((tras.getImporte() != null)) xml.setIsr(tras.getImporte().toString());
+                        if ((tras.getTipoFactor() != CTipoFactor.EXENTO)) xml.setIsr(formatoMontos(tras.getImporte()));
                         else xml.setIsr("0");
                     }
                     case IVA -> {
-                        if ((tras.getImporte() != null)) xml.setIva(tras.getImporte().toString());
+                        if ((tras.getTipoFactor() != CTipoFactor.EXENTO)) xml.setIva(formatoMontos(tras.getImporte()));
                         else xml.setIva("0");
                     }
                     case IEPS -> {
-                        if ((tras.getImporte() != null)) xml.setIeps(tras.getImporte().toString());
+                        if ((tras.getTipoFactor() != CTipoFactor.EXENTO)) xml.setIeps(formatoMontos(tras.getImporte()));
                         else xml.setIeps("0");
                     }
                 }
             }));
         });
 
-        xml.setSubtotal(comprobante.getSubTotal().toString());
-        xml.setTotal(comprobante.getTotal().toString());
+        xml.setSubtotal(formatoMontos(comprobante.getSubTotal()));
+        xml.setTotal(formatoMontos(comprobante.getTotal()));
         xml.setTipoComprobante(comprobante.getTipoDeComprobante().value());
         xml.setVersion(comprobante.getVersion());
         xml.setRfcEmisor(comprobante.getEmisor().getRfc());
@@ -112,9 +110,9 @@ public class ManejoXML {
                 claveUnidad.append(con.getClaveUnidad().concat("\n"));
                 descripcion.append(con.getDescripcion().concat("\n"));
                 objetoImp.append(con.getObjetoImp().concat("\n"));
-                cantidad.append(String.valueOf(con.getCantidad()).concat("\n"));
-                valorUnitario.append(String.valueOf(con.getValorUnitario()).concat("\n"));
-                importeConcepto.append(String.valueOf(con.getImporte()).concat("\n"));
+                cantidad.append(formatoMontos(con.getCantidad()).concat("\n"));
+                valorUnitario.append(formatoMontos(con.getValorUnitario()).concat("\n"));
+                importeConcepto.append(formatoMontos(con.getImporte()).concat("\n"));
 
                 Optional<Comprobante.Conceptos.Concepto.Impuestos> ImpuestosCon = Optional.ofNullable(con.getImpuestos());
                 ImpuestosCon.ifPresent(impuestos -> {
@@ -122,18 +120,21 @@ public class ManejoXML {
                     trasladoCon.ifPresent(traslados -> traslados.getTraslado().forEach(tras -> {
                         String tipo = tras.getImpuesto();
                         switch (tipo) {
-                            case ISR -> isrRetConcepto.append(String.valueOf(tras.getImporte()).concat("\n"));
-                            case IVA -> ivaConcepto.append(String.valueOf(tras.getImporte()).concat("\n"));
-                            case IEPS -> isrConcepto.append(String.valueOf(tras.getImporte()).concat("\n"));
+                            case ISR -> isrRetConcepto.append(formatoMontos(tras.getImporte()).concat("\n"));
+                            case IVA -> {
+                                if(tras.getTipoFactor() != CTipoFactor.EXENTO) ivaConcepto.append(formatoMontos(tras.getImporte()).concat("\n"));
+                                else ivaConcepto.append("0\n");
+                            }
+                            case IEPS -> isrConcepto.append(formatoMontos(tras.getImporte()).concat("\n"));
                         }
                     }));
                     Optional<Comprobante.Conceptos.Concepto.Impuestos.Retenciones> retencionCon = Optional.ofNullable(con.getImpuestos().getRetenciones());
                     retencionCon.ifPresent(retencions -> retencions.getRetencion().forEach(ret -> {
                         String tipo = ret.getImpuesto();
                         switch (tipo) {
-                            case ISR -> isrRetConcepto.append(String.valueOf(ret.getImporte()).concat("\n"));
-                            case IVA -> ivaRetConcepto.append(String.valueOf(ret.getImporte()).concat("\n"));
-                            case IEPS -> iepsRetConcepto.append(String.valueOf(ret.getImporte()).concat("\n"));
+                            case ISR -> isrRetConcepto.append(formatoMontos(ret.getImporte()).concat("\n"));
+                            case IVA -> ivaRetConcepto.append(formatoMontos(ret.getImporte()).concat("\n"));
+                            case IEPS -> iepsRetConcepto.append(formatoMontos(ret.getImporte()).concat("\n"));
                         }
                     }));
                 });
