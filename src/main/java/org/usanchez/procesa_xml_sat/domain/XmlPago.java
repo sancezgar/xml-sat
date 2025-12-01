@@ -1,19 +1,26 @@
 package org.usanchez.procesa_xml_sat.domain;
 
 public class XmlPago {
+    private String uuid;
     private String fechaTimbrado;
     private String serie;
     private String folio;
-    private String RfcEmisor;
+    private String rfcEmisor;
     private String nombreEmisor;
     private String regimenFiscalEmisor;
-    private String RfcRecepor;
+    private String rfcRecepor;
     private String nombreReceptor;
     private String regimenFiscalReceptor;
     private String usoCFDI;
     private String subtotal;
     private String iva;
+    private String retIva;
+    private String retIeps;
+    private String retIsr;
     private String monto;
+    private String moneda;
+    private String uuidRelacionado;
+    private String tipoCambio;
     private String fechaPago;
     private String formaPago;
 
@@ -21,22 +28,37 @@ public class XmlPago {
     public XmlPago() {
     }
 
-    public XmlPago(String fechaTimbrado, String serie, String folio, String rfcEmisor, String nombreEmisor, String regimenFiscalEmisor, String rfcRecepor, String nombreReceptor, String regimenFiscalReceptor, String usoCFDI, String subtotal, String iva, String monto, String fechaPago, String formaPago) {
+    public XmlPago(String uuid, String fechaTimbrado, String serie, String folio, String rfcEmisor, String nombreEmisor, String regimenFiscalEmisor, String rfcRecepor, String nombreReceptor, String regimenFiscalReceptor, String usoCFDI, String subtotal, String iva, String retIva, String retIeps, String retIsr, String monto, String moneda, String uuidRelacionado, String tipoCambio, String fechaPago, String formaPago) {
+        this.uuid = uuid;
         this.fechaTimbrado = fechaTimbrado;
         this.serie = serie;
         this.folio = folio;
-        RfcEmisor = rfcEmisor;
+        this.rfcEmisor = rfcEmisor;
         this.nombreEmisor = nombreEmisor;
         this.regimenFiscalEmisor = regimenFiscalEmisor;
-        RfcRecepor = rfcRecepor;
+        this.rfcRecepor = rfcRecepor;
         this.nombreReceptor = nombreReceptor;
         this.regimenFiscalReceptor = regimenFiscalReceptor;
         this.usoCFDI = usoCFDI;
         this.subtotal = subtotal;
         this.iva = iva;
+        this.retIva = retIva;
+        this.retIeps = retIeps;
+        this.retIsr = retIsr;
         this.monto = monto;
+        this.moneda = moneda;
+        this.uuidRelacionado = uuidRelacionado;
+        this.tipoCambio = tipoCambio;
         this.fechaPago = fechaPago;
         this.formaPago = formaPago;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getFechaTimbrado() {
@@ -64,11 +86,11 @@ public class XmlPago {
     }
 
     public String getRfcEmisor() {
-        return RfcEmisor;
+        return rfcEmisor;
     }
 
     public void setRfcEmisor(String rfcEmisor) {
-        RfcEmisor = rfcEmisor;
+        this.rfcEmisor = rfcEmisor;
     }
 
     public String getNombreEmisor() {
@@ -88,11 +110,11 @@ public class XmlPago {
     }
 
     public String getRfcRecepor() {
-        return RfcRecepor;
+        return rfcRecepor;
     }
 
     public void setRfcRecepor(String rfcRecepor) {
-        RfcRecepor = rfcRecepor;
+        this.rfcRecepor = rfcRecepor;
     }
 
     public String getNombreReceptor() {
@@ -135,12 +157,60 @@ public class XmlPago {
         this.iva = iva;
     }
 
+    public String getRetIva() {
+        return retIva;
+    }
+
+    public void setRetIva(String retIva) {
+        this.retIva = retIva;
+    }
+
+    public String getRetIeps() {
+        return retIeps;
+    }
+
+    public void setRetIeps(String retIeps) {
+        this.retIeps = retIeps;
+    }
+
+    public String getRetIsr() {
+        return retIsr;
+    }
+
+    public void setRetIsr(String retIsr) {
+        this.retIsr = retIsr;
+    }
+
     public String getMonto() {
         return monto;
     }
 
     public void setMonto(String monto) {
         this.monto = monto;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
+    }
+
+    public String getUuidRelacionado() {
+        return uuidRelacionado;
+    }
+
+    public void setUuidRelacionado(String uuidRelacionado) {
+        this.uuidRelacionado = uuidRelacionado;
+    }
+
+    public String getTipoCambio() {
+        return tipoCambio;
+    }
+
+    public void setTipoCambio(String tipoCambio) {
+        this.tipoCambio = tipoCambio;
     }
 
     public String getFechaPago() {

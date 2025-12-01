@@ -5,6 +5,7 @@ import javafx.scene.control.TableView;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.usanchez.procesa_xml_sat.App;
 
 import static org.usanchez.procesa_xml_sat.helper.TransformarTexto.*;
 
@@ -20,16 +21,18 @@ public class ExportarInfo {
             for (TableView<?> tabla : tablas) {
                 exportaUnaTabla(tabla,workbook,archivoRuta);
             }
-            System.out.println("Termina exportación...");
+            App.mostrarMensaje("Termina exportación en la ruta: " + archivoRuta);
         }catch (Exception e){
-            System.out.println("Mensaje Error -> " + e.getMessage());
+            App.mostrarMensajeError("Mensaje Error -> " + e.getMessage());
         }
     }
 
     public static<T> void exportaUnaTabla(TableView<T> tabla, Workbook workbook, String archivoRuta){
         AtomicInteger rowNum = new AtomicInteger(0);
         Sheet hoja = workbook.createSheet(tabla.getAccessibleText());
+        //Inmovilizar la primera fila
         hoja.createFreezePane(0,1,0,1);
+
         System.out.println("Generando la hoja " + tabla.getAccessibleText());
 
                 //Estilo cabecera
@@ -101,11 +104,20 @@ public class ExportarInfo {
                     hoja.autoSizeColumn(i);
                 }
 
+                for (int i = hoja.getFirstRowNum(); i <= hoja.getLastRowNum(); i++) {
+                    Row row = hoja.getRow(i);
+                    if (row != null) {
+                        // Este método le indica a Excel que la altura debe ser calculada.
+                        // Es el mejor intento para forzar el ajuste de la altura para el texto envuelto.
+                        row.setZeroHeight(false);
+                    }
+                }
+
                 // --- Guardar archivo ---
                 try (FileOutputStream fileOut = new FileOutputStream(archivoRuta)) {
                     workbook.write(fileOut);
                 } catch (IOException e) {
-                    System.out.println("Mensaje Error -> " + e.getMessage());
+                    App.mostrarMensajeError("Mensaje Error -> " + e.getMessage());
                 }
     }
 }

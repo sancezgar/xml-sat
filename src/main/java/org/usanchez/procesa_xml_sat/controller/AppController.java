@@ -11,17 +11,19 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.DataFormat;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.usanchez.procesa_xml_sat.App;
 import org.usanchez.procesa_xml_sat.domain.*;
 import static org.usanchez.procesa_xml_sat.helper.ManejoXML.*;
 import static org.usanchez.procesa_xml_sat.helper.FormatoCantidades.*;
 import static org.usanchez.procesa_xml_sat.helper.ExportarInfo.*;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -29,21 +31,28 @@ import java.util.*;
 
 public class AppController implements Initializable {
     @FXML private TableView<XmlPago> pagoTableView;
-    @FXML private TableColumn<XmlPago, String> FechaPagoColumn;
-    @FXML private TableColumn<XmlPago, String> FechaTimbradoColumn;
-    @FXML private TableColumn<XmlPago, String> FolioColumn;
-    @FXML private TableColumn<XmlPago, String> FormaPagoColumn;
-    @FXML private TableColumn<XmlPago, String> IvaColumn;
+    @FXML private TableColumn<XmlPago, String> uuidColumn;
+    @FXML private TableColumn<XmlPago, String> fechaTimbradoColumn;
+    @FXML private TableColumn<XmlPago, String> serieColumn;
+    @FXML private TableColumn<XmlPago, String> folioColumn;
+    @FXML private TableColumn<XmlPago, String> rfcEmisorColumn;
+    @FXML private TableColumn<XmlPago, String> nombreEmisorColumn;
+    @FXML private TableColumn<XmlPago, String> regimenFiscalEmisorColumn;
+    @FXML private TableColumn<XmlPago, String> rfcReceporColumn;
+    @FXML private TableColumn<XmlPago, String> nombreReceptorColumn;
+    @FXML private TableColumn<XmlPago, String> regimenFiscalReceptorColumn;
+    @FXML private TableColumn<XmlPago, String> usoCFDIColumn;
+    @FXML private TableColumn<XmlPago, String> subtotalColumn;
+    @FXML private TableColumn<XmlPago, String> ivaColumn;
+    @FXML private TableColumn<XmlPago, String> retIvaColumn;
+    @FXML private TableColumn<XmlPago, String> retIEPSColumn;
+    @FXML private TableColumn<XmlPago, String> retISRColumn;
     @FXML private TableColumn<XmlPago, String> MontoColumn;
-    @FXML private TableColumn<XmlPago, String> NombreEmisorColumn;
-    @FXML private TableColumn<XmlPago, String> NombreReceptorColumn;
-    @FXML private TableColumn<XmlPago, String> RFCEmisorColumn;
-    @FXML private TableColumn<XmlPago, String> RFCReceporColumn;
-    @FXML private TableColumn<XmlPago, String> RegimenFiscalEmisorColumn;
-    @FXML private TableColumn<XmlPago, String> RegimenFiscalReceptorColumn;
-    @FXML private TableColumn<XmlPago, String> SerieColumn;
-    @FXML private TableColumn<XmlPago, String> SubtotalColumn;
-    @FXML private TableColumn<XmlPago, String> UsoCFDIColumn;
+    @FXML private TableColumn<XmlPago, String> monedaColumn;
+    @FXML private TableColumn<XmlPago, String> tipoCambioColumn;
+    @FXML private TableColumn<XmlPago, String> uuidRelacionadoColumn;
+    @FXML private TableColumn<XmlPago, String> fechaPagoColumn;
+    @FXML private TableColumn<XmlPago, String> formaPagoColumn;
 
     @FXML private AnchorPane appWindow;
 
@@ -146,7 +155,7 @@ public class AppController implements Initializable {
 
     private ObservableList<XmlInfo> tablaIngresos;
     private ObservableList<XmlInfo> tablaEgresos;
-    private ObservableList<?> tablaPagos;
+    private ObservableList<XmlPago> tablaPagos;
 
     private List<TableView<?>> tablas;
 
@@ -168,13 +177,15 @@ public class AppController implements Initializable {
             jaxbContext = JAXBContext.newInstance(Comprobante.class, TimbreFiscalDigital.class, Pagos.class);
             jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         }catch (JAXBException e){
-            System.out.println("Mensaje de error " + e.getMessage());
+            App.mostrarMensajeError("Error al inicializar el lector XMl. " + e.getMessage());
         }
     }
 
     public void exportar(){
-
+        //Obtenemos las fechas
         String fecha = LocalDateTime.now().format(DateTimeFormatter.ofPattern("ddMMyyyy_HHmmss"));
+
+        //Inicializamos el selector de archivos.
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Guardar Reporte");
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
@@ -192,9 +203,9 @@ public class AppController implements Initializable {
             if(!path.toLowerCase().endsWith(selectedExtension.substring(1))){
                 file = new File(path + selectedExtension.substring(1));
             }
-            System.out.println(file.getAbsolutePath());
             exportarExcel(tablas,file.getAbsolutePath());
-        }
+            abrirArchivo(file);
+        }else App.mostrarMensaje("No se seleccionó ningún archivo a guardar.");
     }
 
     public void importar(){
@@ -209,8 +220,9 @@ public class AppController implements Initializable {
             obtenerCantidadTitulosTab();
             mostrarTablaIngresos();
             mostrarTablaEgresos();
+            mostrarTablaPagos();
         }else{
-            System.out.println("No se escogio la ruta.");
+            App.mostrarMensajeError("No se escogio la ruta.");
         }
     }
 
@@ -224,10 +236,11 @@ public class AppController implements Initializable {
                 switch (tipoIngreso){
                     case TIPO_INGRESOS -> tablaIngresos.add(llenaXmlInfo(comprobante));
                     case TIPO_EGRESOS -> tablaEgresos.add(llenaXmlInfo(comprobante));
+                    case TIPO_PAGO -> tablaPagos.add(llenaXmlPago(comprobante));
                 }
             }
         }catch (JAXBException e){
-            System.out.println("Mensaje de error: " + e.getMessage());
+            App.mostrarMensajeError("Mensaje de error: " + e.getMessage());
         }
     }
 
@@ -321,6 +334,33 @@ public class AppController implements Initializable {
         egresoTablaView.setItems(tablaEgresos);
     }
 
+    public void mostrarTablaPagos(){
+        uuidColumn.setCellValueFactory(new PropertyValueFactory<>("uuid"));
+        fechaTimbradoColumn.setCellValueFactory(new PropertyValueFactory<>("fechaTimbrado"));
+        serieColumn.setCellValueFactory(new PropertyValueFactory<>("serie"));
+        folioColumn.setCellValueFactory(new PropertyValueFactory<>("folio"));
+        rfcEmisorColumn.setCellValueFactory(new PropertyValueFactory<>("RfcEmisor"));
+        nombreEmisorColumn.setCellValueFactory(new PropertyValueFactory<>("nombreEmisor"));
+        regimenFiscalEmisorColumn.setCellValueFactory(new PropertyValueFactory<>("regimenFiscalEmisor"));
+        rfcReceporColumn.setCellValueFactory(new PropertyValueFactory<>("RfcRecepor"));
+        nombreReceptorColumn.setCellValueFactory(new PropertyValueFactory<>("nombreReceptor"));
+        regimenFiscalReceptorColumn.setCellValueFactory(new PropertyValueFactory<>("regimenFiscalReceptor"));
+        usoCFDIColumn.setCellValueFactory(new PropertyValueFactory<>("usoCFDI"));
+        subtotalColumn.setCellValueFactory(new PropertyValueFactory<>("subtotal"));
+        ivaColumn.setCellValueFactory(new PropertyValueFactory<>("iva"));
+        retIvaColumn.setCellValueFactory(new PropertyValueFactory<>("retIva"));
+        retIEPSColumn.setCellValueFactory(new PropertyValueFactory<>("retIeps"));
+        retISRColumn.setCellValueFactory(new PropertyValueFactory<>("retIsr"));
+        MontoColumn.setCellValueFactory(new PropertyValueFactory<>("monto"));
+        monedaColumn.setCellValueFactory(new PropertyValueFactory<>("moneda"));
+        tipoCambioColumn.setCellValueFactory(new PropertyValueFactory<>("uuidRelacionado"));
+        uuidRelacionadoColumn.setCellValueFactory(new PropertyValueFactory<>("tipoCambio"));
+        fechaPagoColumn.setCellValueFactory(new PropertyValueFactory<>("fechaPago"));
+        formaPagoColumn.setCellValueFactory(new PropertyValueFactory<>("formaPago"));
+
+        pagoTableView.setItems(tablaPagos);
+    }
+
 
     private void obtenerCantidadTitulosTab(){
         int ing = tablaIngresos.size();
@@ -344,12 +384,7 @@ public class AppController implements Initializable {
 
     public void maximizar(){
         Stage stage = (Stage) appWindow.getScene().getWindow();
-
-        if(stage.isMaximized()){
-            stage.setMaximized(false);
-        }else{
-            stage.setMaximized(true);
-        }
+        stage.setMaximized(!stage.isMaximized());
     }
 
     public void cerrarVentana(){
@@ -362,6 +397,26 @@ public class AppController implements Initializable {
         tablaPagos.clear();
     }
 
+    private void abrirArchivo(File archivo){
+        System.out.println(archivo.getAbsolutePath());
+        if(!App.mostrarConfirmacion("¿Deseas abrir el archivo?")) return;
 
+        // 1. Verificar si el entorno de escritorio es soportado
+        if (!Desktop.isDesktopSupported() || !Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+            App.mostrarMensaje("La acción de abrir no es soportada en este sistema.");
+            // Opcional: Mostrar una alerta al usuario.
+            return;
+        }
 
+        if(!archivo.exists()){
+            App.mostrarMensaje("No existe el archivo");
+            return;
+        }
+
+        try{
+            Desktop.getDesktop().open(archivo);
+        }catch (IOException e){
+            App.mostrarMensajeError("No se pudo abrir el archivo: " + e.getMessage());
+        }
+    }
 }

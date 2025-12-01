@@ -16,6 +16,7 @@ public class ManejoXML {
     private final static String IVA = "002";
     private final static String IEPS = "003";
 
+    //Se obtiene la estructura del timbre fiscal del xml
     private static TimbreFiscalDigital obtenerDatosTimbre(List<Object> objs) {
         for (Object obj : objs) {
             if (obj instanceof TimbreFiscalDigital) {
@@ -24,7 +25,7 @@ public class ManejoXML {
         }
         return null;
     }
-
+    //Se obtiene la estructura del Pago20 del xml
     private static Pagos obtenerDatosPagos(List<Object> objs) {
         for (Object obj : objs) {
             if (obj instanceof Pagos) {
@@ -34,11 +35,12 @@ public class ManejoXML {
         return null;
     }
 
+    //Obtenemos los impuestos de la factura.
     private static String obtenerImpuestos(Comprobante comprobante, String tipoImpuesto, boolean esTraslado){
         AtomicReference<Double> monto= new AtomicReference<>(0.0);
         Optional<Comprobante.Impuestos> impuestosOptional = Optional.ofNullable(comprobante.getImpuestos());
         if(impuestosOptional.isEmpty()) return formatoMontos(monto.get());
-        if(esTraslado){
+        if(esTraslado){ //Obtenemos los impuestos de traslados.
             Optional<Comprobante.Impuestos.Traslados> trasladosOptional = Optional.ofNullable(impuestosOptional.get().getTraslados());
             if(trasladosOptional.isEmpty()) return formatoMontos(monto.get());
             impuestosOptional.get().getTraslados().getTraslado().stream().filter(t -> tipoImpuesto.equals(t.getImpuesto()))
@@ -49,7 +51,7 @@ public class ManejoXML {
                             monto.updateAndGet(v -> v + t.getImporte().doubleValue());
                         }
                     });
-        }else{
+        }else{//Obtenemos los impuestos retenidos.
             Optional<Comprobante.Impuestos.Retenciones> retencionesOptional = Optional.ofNullable(impuestosOptional.get().getRetenciones());
             if(retencionesOptional.isEmpty()) return formatoMontos(monto.get());
             impuestosOptional.get().getRetenciones().getRetencion().stream().filter(t -> tipoImpuesto.equals(t.getImpuesto()))
@@ -58,6 +60,7 @@ public class ManejoXML {
         return formatoMontos(monto.get());
     }
 
+    //Obtenemos los impuestos por concepto.
     private static String obtenerImpuestos(Comprobante.Conceptos.Concepto concepto, String tipoImpuesto, boolean esTraslado){
         AtomicReference<Double> monto= new AtomicReference<>(0.0);
         Optional<Comprobante.Conceptos.Concepto.Impuestos> impuestosOptional = Optional.ofNullable(concepto.getImpuestos());
@@ -142,7 +145,6 @@ public class ManejoXML {
                 if(con.getDescuento() != null) descuentoConcepto.append(formatoMontos(con.getDescuento()).concat("\n"));
                 else descuentoConcepto.append("0\n");
 
-
                 isrConcepto.append(obtenerImpuestos(con,ISR,true).concat("\n"));
                 ivaConcepto.append(obtenerImpuestos(con,IVA,true).concat("\n"));
                 iepsConcepto.append(obtenerImpuestos(con,IEPS,true).concat("\n"));
@@ -183,6 +185,68 @@ public class ManejoXML {
         xml.setUuidRelacionados(quitarUltimoSaltoLinea(uuidRelacionados.toString()));
 
         return xml;
+    }
+
+    public static XmlPago llenaXmlPago(Comprobante comprobante){
+        XmlPago xmlPago = new XmlPago("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+        TimbreFiscalDigital timbreFiscalDigital = obtenerDatosTimbre(comprobante.getComplemento().getAny());
+        Pagos pagos = obtenerDatosPagos(comprobante.getComplemento().getAny());
+
+        xmlPago.setUuid(timbreFiscalDigital.getUUID());
+        xmlPago.setFechaTimbrado(timbreFiscalDigital.getFechaTimbrado().toString());
+        xmlPago.setSerie(comprobante.getSerie());
+        xmlPago.setFolio(comprobante.getFolio());
+        xmlPago.setRfcEmisor(comprobante.getEmisor().getRfc());
+        xmlPago.setNombreEmisor(comprobante.getEmisor().getNombre());
+        xmlPago.setRegimenFiscalEmisor(comprobante.getEmisor().getRegimenFiscal());
+        xmlPago.setRfcRecepor(comprobante.getReceptor().getRfc());
+        xmlPago.setNombreReceptor(comprobante.getReceptor().getNombre());
+        xmlPago.setRegimenFiscalReceptor(comprobante.getReceptor().getRegimenFiscalReceptor());
+        xmlPago.setUsoCFDI(comprobante.getReceptor().getUsoCFDI().value());
+
+        Optional<?> totales = Optional.ofNullable(pagos.getTotales());
+
+        if(totales.isPresent()){
+            //Obtener los subtotal, iva, monto, moneda, documento relacionado, tipo de cambio, forma de pago, UUID del complemento.
+            Optional<BigDecimal> baseIva0 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosBaseIVA0());
+            Optional<BigDecimal> baseIva8 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosBaseIVA8());
+            Optional<BigDecimal> baseIva16 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosBaseIVA16());
+
+            BigDecimal subtotal = baseIva0.orElse(BigDecimal.valueOf(0)).add(baseIva8.orElse(BigDecimal.valueOf(0))).add(baseIva16.orElse(BigDecimal.valueOf(0)));
+            xmlPago.setSubtotal(formatoMontos(subtotal));
+
+            Optional<BigDecimal> iva0 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosImpuestoIVA0());
+            Optional<BigDecimal> iva8 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosImpuestoIVA8());
+            Optional<BigDecimal> iva16 = Optional.ofNullable(pagos.getTotales().getTotalTrasladosImpuestoIVA16());
+
+            BigDecimal iva = iva0.orElse(BigDecimal.valueOf(0)).add(iva8.orElse(BigDecimal.valueOf(0))).add(iva16.orElse(BigDecimal.valueOf(0)));
+            xmlPago.setIva(formatoMontos(iva));
+
+            Optional<BigDecimal> retIva = Optional.ofNullable(pagos.getTotales().getTotalRetencionesIVA());
+            Optional<BigDecimal> retIeps = Optional.ofNullable(pagos.getTotales().getTotalRetencionesIEPS());
+            Optional<BigDecimal> retIsr = Optional.ofNullable(pagos.getTotales().getTotalRetencionesISR());
+
+            xmlPago.setRetIva(formatoMontos(retIva.orElse(BigDecimal.valueOf(0))));
+            xmlPago.setRetIeps(formatoMontos(retIeps.orElse(BigDecimal.valueOf(0))));
+            xmlPago.setRetIsr(formatoMontos(retIsr.orElse(BigDecimal.valueOf(0))));
+            xmlPago.setMonto(formatoMontos(pagos.getTotales().getMontoTotalPagos()));
+        }
+
+        StringBuilder UUIDRel = new StringBuilder();
+        pagos.getPago().forEach(pago -> {
+            pago.getDoctoRelacionado().forEach(docto -> {
+                UUIDRel.append(docto.getIdDocumento()).append("\n");
+            });
+            xmlPago.setMoneda(pago.getMonedaP().value());
+            Optional<BigDecimal> optionalTipoCambio = Optional.of(pago.getTipoCambioP());
+            xmlPago.setTipoCambio(formatoMontos(optionalTipoCambio.orElse(BigDecimal.valueOf(0))));
+            xmlPago.setFormaPago(pago.getFormaDePagoP());
+            xmlPago.setFechaPago(pago.getFechaPago().toString());
+        });
+
+        xmlPago.setUuidRelacionado(quitarUltimoSaltoLinea(UUIDRel.toString()));
+
+        return xmlPago;
     }
 }
 

@@ -209,21 +209,28 @@
                                        <children>
                                           <TableView fx:id="pagoTableView" accessibleText="Pagos" prefHeight="654.0" prefWidth="1190.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                                              <columns>
-                                                <TableColumn fx:id="FechaTimbradoColumn" prefWidth="150.0" text="Fecha Timbrado" />
-                                                <TableColumn fx:id="SerieColumn" prefWidth="150.0" text="Serie" />
-                                                <TableColumn fx:id="FolioColumn" prefWidth="150.0" text="Folio" />
-                                                <TableColumn fx:id="RFCEmisorColumn" prefWidth="150.0" text="RFC Emisor" />
-                                                <TableColumn fx:id="NombreEmisorColumn" prefWidth="150.0" text="Nombre Emisor" />
-                                                <TableColumn fx:id="RegimenFiscalEmisorColumn" prefWidth="150.0" text="Regimen Fiscal Emisor" />
-                                                <TableColumn fx:id="RFCReceporColumn" prefWidth="150.0" text="RFC Recepor" />
-                                                <TableColumn fx:id="NombreReceptorColumn" prefWidth="150.0" text="Nombre Receptor" />
-                                                <TableColumn fx:id="RegimenFiscalReceptorColumn" prefWidth="150.0" text="Regimen Fiscal Receptor" />
-                                                <TableColumn fx:id="UsoCFDIColumn" prefWidth="150.0" text="Uso CFDI" />
-                                                <TableColumn fx:id="SubtotalColumn" prefWidth="150.0" text="Subtotal" />
-                                                <TableColumn fx:id="IvaColumn" prefWidth="150.0" text="Iva" />
+                                                <TableColumn fx:id="uuidColumn" prefWidth="150.0" text="Uuid" />
+                                                <TableColumn fx:id="fechaTimbradoColumn" prefWidth="150.0" text="Fecha Timbrado" />
+                                                <TableColumn fx:id="serieColumn" prefWidth="150.0" text="Serie" />
+                                                <TableColumn fx:id="folioColumn" prefWidth="150.0" text="Folio" />
+                                                <TableColumn fx:id="rfcEmisorColumn" prefWidth="150.0" text="RFC Emisor" />
+                                                <TableColumn fx:id="nombreEmisorColumn" prefWidth="150.0" text="Nombre Emisor" />
+                                                <TableColumn fx:id="regimenFiscalEmisorColumn" prefWidth="150.0" text="Regimen Fiscal Emisor" />
+                                                <TableColumn fx:id="rfcReceporColumn" prefWidth="150.0" text="RFC Recepor" />
+                                                <TableColumn fx:id="nombreReceptorColumn" prefWidth="150.0" text="Nombre Receptor" />
+                                                <TableColumn fx:id="regimenFiscalReceptorColumn" prefWidth="150.0" text="Regimen Fiscal Receptor" />
+                                                <TableColumn fx:id="usoCFDIColumn" prefWidth="150.0" text="Uso CFDI" />
+                                                <TableColumn fx:id="subtotalColumn" prefWidth="150.0" text="Subtotal" />
+                                                <TableColumn fx:id="ivaColumn" prefWidth="150.0" text="Iva" />
+                                                <TableColumn fx:id="retIvaColumn" prefWidth="150.0" text="Ret Iva" />
+                                                <TableColumn fx:id="retIEPSColumn" prefWidth="150.0" text="Ret IEPS" />
+                                                <TableColumn fx:id="retISRColumn" prefWidth="150.0" text="Ret ISR" />
                                                 <TableColumn fx:id="MontoColumn" prefWidth="150.0" text="Monto" />
-                                                <TableColumn fx:id="FechaPagoColumn" prefWidth="150.0" text="Fecha Pago" />
-                                                <TableColumn fx:id="FormaPagoColumn" prefWidth="150.0" text="Forma Pago" />
+                                                <TableColumn fx:id="monedaColumn" prefWidth="150.0" text="Moneda" />
+                                                <TableColumn fx:id="tipoCambioColumn" prefWidth="150.0" text="Tipo Cambio" />
+                                                <TableColumn fx:id="uuidRelacionadoColumn" prefWidth="150.0" text="UUID Relacionado" />
+                                                <TableColumn fx:id="fechaPagoColumn" prefWidth="150.0" text="Fecha Pago" />
+                                                <TableColumn fx:id="formaPagoColumn" prefWidth="150.0" text="Forma Pago" />
                                              </columns>
                                           </TableView>
                                        </children>
